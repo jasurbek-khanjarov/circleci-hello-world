@@ -9,6 +9,8 @@ jobs:
         - run:
             name: update-npm
             command: 'sudo npm install -g npm@latest'
+        - restore_cache:
+            key: dependency-cache-{{ checksum "package-lock.json" }}
         - run:
             name: install-npm
             command: npm install
@@ -18,4 +20,19 @@ jobs:
               - ./node_modules
         - run:
             name: test
-            command: jest test
+            command: |
+              mkdir -p test-results/jest
+              jest test
+            environment:
+                JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
+        - persist_to_workspace:
+            root: ~/circleci-hello-world
+            paths:
+              - node_modules
+
+        - store_test_results:
+            path: test-results
+
+        - store_artifacts:
+            path: test-results
