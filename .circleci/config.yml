@@ -18,4 +18,21 @@ jobs:
               - ./node_modules
         - run:
             name: test
-            command: ./node_modules/.bin/jest test
+            command: |
+              mkdir -p test-results/jest
+              ./node_modules/.bin/jest test
+            environment:
+              JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
+        - persist_to_workspace:
+            root: ~/circleci-hello-world
+            paths:
+              - node_modules
+
+        - store_test_results:
+            path: test-results
+
+        - store_artifacts:
+            path: test-results
+
+
