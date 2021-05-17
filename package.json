@@ -2,9 +2,11 @@
     "name": "circleci-test-deploy",
     "version": "0.1.1",
     "devDependencies": {
-        "jest": "^26.6.3"
+        "jest": "^26.6.3",
+        "nyc": "^15.1.0"
     },
     "scriptes": {
-        "test": "jest"
+        "test": "jest",
+        "cover": "nyc --reporter=lcov --reporter=text npm run test"
     }
 }
